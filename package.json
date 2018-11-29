@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "description": "Convert language resources into translated text",
   "main": "index.js",
+  "bin": {
+    "psuedoizer": "cli.js"
+  },
   "dependencies": {
     "commander": "^2.19.0"
   },
