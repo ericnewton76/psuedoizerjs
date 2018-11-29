@@ -1,0 +1,15 @@
+{
+  "name": "psuedoizerjs",
+  "version": "0.1.0",
+  "description": "Convert language resources into translated text",
+  "main": "index.js",
+  "dependencies": {
+    "commander": "^2.19.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Eric Newton",
+  "license": "ISC"
+}
