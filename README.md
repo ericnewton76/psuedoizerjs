@@ -13,3 +13,7 @@ $ psuedoizer test.en.json
   "TEXT_2": "[Ŧĥę qūįčĸ þřőŵŉ ƒőχ ĵūmpęđ ővęř ŧĥę ľäžy čőŵ !!! !!!]"
 }
 ```
+
+# Thanks
+
+A thanks to Scott Hanselman for the original code in C# that I've used for several projects written in .NET  I figured we could expand its use into the Javascript world.
