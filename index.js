@@ -1,14 +1,22 @@
 StringBuilder = function(len) {
+/**
+ * simulates a C# StringBuilder.  
+ * Somehow not needed here since a += string concat seems to be an optimized operation 
+ * ...as opposed to C# always generating intermediate immutable strings.
+ */
+class StringBuilder {
+  constructor(len) {
+    this._buffer = "";
+  }
 
-  this._buffer = "";
+  Append(str) {
+    this._buffer += str;
+    return this;
+  }
 
-}
-StringBuilder.prototype.Append = function(str) {
-  this._buffer += str;
-  return this;
-}
-StringBuilder.prototype.ToString = function() {
-  return this._buffer;
+  ToString() {
+    return this._buffer;
+  }
 }
 
 ConvertToFakeInternationalized = function(inputString) {
