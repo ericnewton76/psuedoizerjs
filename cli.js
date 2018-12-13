@@ -3,6 +3,7 @@ var fs = require('fs');
 var path = require('path');
 var program = require('commander');
 var fakeInternational = require('.');
+var status = require('./lib/cli-status');
 
 program
   .arguments("<orig> [dest]")
@@ -15,6 +16,9 @@ program.parse(process.argv);
 
 //program.file = program.file || "C:\\projects\\arbor\\arbor web apps\\sharingmemories\\develop\\SharingMemoriesAdmin_FED\\coffee\\resources.en.json";
 
+//if writing to stdout, be quiet, no "extra" info
+status.setOptions(program);
+
 if(program.orig==undefined || program.orig == "") {
 
 } else {
@@ -25,8 +29,6 @@ if(program.orig==undefined || program.orig == "") {
   if(program.dest) {
     if(fs.existsSync(program.dest)) {
       strings.dest = JSON.parse(fs.readFileSync(program.dest, { encoding: 'utf8' }));
-    } else {
-      console.warn('File %s doesnt exist', program.dest);
     }
   } else {
     strings.dest = {};
@@ -45,10 +47,11 @@ if(program.orig==undefined || program.orig == "") {
 
   if(program.dest) {
     if(fs.existsSync(program.dest)) {
-      console.log('Creating backup of %s', program.dest);
-      fs.renameSync(program.dest, program.dest+'.bak');
+      status.log('Creating backup of %s', program.dest);
+      fs.copyFileSync(program.dest, program.dest+'.bak');
     }
 
+    status.log('Writing to \'%s\'...', program.dest);
     fs.writeFileSync(program.dest, JSON.stringify(strings.dest,null,2));
   } else {
     process.stdout.write(JSON.stringify(strings.dest,null,2))
