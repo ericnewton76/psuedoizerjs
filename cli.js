@@ -2,7 +2,7 @@
 var fs = require('fs');
 var path = require('path');
 var program = require('commander');
-var fakeInternational = require('.');
+var psuedoizer = require('.');
 var status = require('./lib/cli-status');
 
 program
@@ -39,18 +39,7 @@ status.setOptions(program);
     }
   }
 
-  strings.dest = strings.dest || {};
-
-  var keys = Object.keys(strings.orig);
-  for(var i=0; i < keys.length; i++) {
-    
-    var currentKey = keys[i];
-    var currentVal = strings.orig[currentKey] || "";
-    
-    if((strings.dest[currentKey] || "") == "") {
-      strings.dest[currentKey] = fakeInternational(currentVal);
-    }
-  }
+  strings.dest = psuedoizer.convert(strings.orig, strings.dest);
 
   if(program.dest) {
     if(fs.existsSync(program.dest)) {

@@ -1,4 +1,3 @@
-StringBuilder = function(len) {
 /**
  * simulates a C# StringBuilder.  
  * Somehow not needed here since a += string concat seems to be an optimized operation 
@@ -19,7 +18,69 @@ class StringBuilder {
   }
 }
 
-ConvertToFakeInternationalized = function(inputString) {
+
+/**
+ * reads input and runs psuedoizer algorithm on it.
+ * can be string or object.
+ * @param {object|string} object an object or string to psuedoize
+ * @param {object} outputObj an object with existing translations.  will only add new ones or update values with empty string ("").
+ * @returns {object|string} returns an object or string
+ */
+convert = function(input, outputObj) {
+  if(typeof(input) === "string") {
+    return _psuedoizeString(input);
+  }
+
+  if(typeof(input) === "object") {
+    var keys = Object.keys(input);
+    var output = Object.assign({}, outputObj);
+
+    for(var i=0; i < keys.length; i++) {
+
+      var currentKey = keys[i];
+      var currentVal = input[currentKey] || "";
+
+      if(!output[currentKey] || output[currentKey] == "") {
+        output[currentKey] = _psuedoizeString(currentVal);
+      }
+    }
+
+    return output;
+  }
+
+}
+
+/**
+ * Calculates the average expanded length necessary for internationalization.
+ * The rules, according to "Developing International Software" is:
+ * - when len < 10 characters,  it should grow by 400%
+ * - when len >= 10 characters, it should grow by 30%.
+ * @param {string} inputString 
+ * @returns {number} calculated expansion of psuedo internalized string
+ */
+function getExpandedLength(inputString) {
+  if(typeof(inputString) === "string") {
+    var OrigLen = inputString.length;
+    var PseudoLen = 0;
+    if (OrigLen < 10)
+    {
+      PseudoLen = Math.round((OrigLen * 4) + OrigLen);
+    }
+    else
+    {
+      PseudoLen = Math.round((OrigLen * 1.2));
+    }
+
+    return PseudoLen;
+  }
+}
+
+/**
+ * Takes the given string and converts it into psuedo international characters.
+ * Credit to Scott Hanselman for original code/concept here.
+ * @param {string} the source string to convert
+ */
+function _psuedoizeString(inputString) {
 
     //check if the input string is a http or https link... if it is, do not localize
     if(/http[s]:\/\//.test(inputString))
@@ -27,21 +88,9 @@ ConvertToFakeInternationalized = function(inputString) {
         return inputString;
     }
 
-
-    // Calculate the extra space necessary for pseudo
-    // internationalization.  The rules, according to "Developing
-    // International Software" is that < 10  characters you should grow
-    // by 400% while >= 10 characters should grow by 30%.
+    //get the expanded length
+    var PseudoLen = getExpandedLength(inputString);
     var OrigLen = inputString.length;
-    var PseudoLen = 0;
-    if (OrigLen < 10)
-    {
-        PseudoLen = Math.round((OrigLen * 4) + OrigLen);
-    }
-    else
-    {
-        PseudoLen = Math.round((OrigLen * 1.2));
-    }
 
     var sb = new StringBuilder(PseudoLen);
 
@@ -260,4 +309,7 @@ ConvertToFakeInternationalized = function(inputString) {
     return (sb.ToString());
 }
 
-module.exports = ConvertToFakeInternationalized;
+module.exports = {
+  convert: convert,
+  getExpandedLength: getExpandedLength
+}
