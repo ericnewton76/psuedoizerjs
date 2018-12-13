@@ -8,10 +8,11 @@ var status = require('./lib/cli-status');
 program
   .name("psuedoizer")
   .option("--verbose", "Verbose output")
-  .arguments("<orig> [dest]")
-  .action(function(orig, dest) {
-    program.orig = orig;
-    program.dest = dest;
+  .description("With no FILE, or when FILE is -, read standard input.")
+  .arguments("[FILE]")
+  .action(function(FILE) {
+    program.FILE = FILE;
+    if(!program.FILE || program.FILE === "-") program.stdin = true;
   })
 
 program.parse(process.argv);
@@ -21,20 +22,24 @@ program.parse(process.argv);
 //if writing to stdout, be quiet, no "extra" info
 status.setOptions(program);
 
-if(program.orig==undefined || program.orig == "") {
-
-} else {
-
+(function main() {
   var strings = {};
-  strings.orig = JSON.parse(fs.readFileSync(program.orig, { encoding:'utf8' }));
+
+  if(!program.stdin) {
+    strings.orig = JSON.parse(fs.readFileSync(program.FILE, { encoding:'utf8' }));
+
+  } else {
+    strings.orig = JSON.parse(fs.readFileSync(0, { encoding:"utf8"}));
+
+  }
 
   if(program.dest) {
     if(fs.existsSync(program.dest)) {
       strings.dest = JSON.parse(fs.readFileSync(program.dest, { encoding: 'utf8' }));
     }
-  } else {
-    strings.dest = {};
   }
+
+  strings.dest = strings.dest || {};
 
   var keys = Object.keys(strings.orig);
   for(var i=0; i < keys.length; i++) {
@@ -58,8 +63,7 @@ if(program.orig==undefined || program.orig == "") {
   } else {
     process.stdout.write(JSON.stringify(strings.dest,null,2))
   }
-}
 
-if(program.dest !== undefined) {
-  console.log('Done');
-}
+
+  status.log('Done');
+})();
