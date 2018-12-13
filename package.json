@@ -13,6 +13,17 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ericnewton76/psuedoizerjs"
+  },
+  "keywords": [
+    "internationalization", 
+    "localization",
+    "i18n",
+    "l18n",
+    "angular-translate"
+  ],
   "author": "Eric Newton",
   "license": "MIT"
 }
