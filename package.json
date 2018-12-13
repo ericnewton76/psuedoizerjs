@@ -1,7 +1,7 @@
 {
   "name": "psuedoizerjs",
   "version": "0.1.0",
-  "description": "Convert language resources into translated text",
+  "description": "Convert language resources into psuedo-internationalized text",
   "main": "index.js",
   "bin": {
     "psuedoizer": "cli.js"
