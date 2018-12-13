@@ -6,6 +6,8 @@ var fakeInternational = require('.');
 var status = require('./lib/cli-status');
 
 program
+  .name("psuedoizer")
+  .option("--verbose", "Verbose output")
   .arguments("<orig> [dest]")
   .action(function(orig, dest) {
     program.orig = orig;
