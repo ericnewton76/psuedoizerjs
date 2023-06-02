@@ -31,23 +31,20 @@ convert = function(input, outputObj) {
     return _psuedoizeString(input);
   }
 
-  if(typeof(input) === "object") {
-    var keys = Object.keys(input);
-    var output = Object.assign({}, outputObj);
+  var keys = Object.keys(input);
+  var output = Array.isArray(input) ? [] : Object.assign({}, outputObj);
 
-    for(var i=0; i < keys.length; i++) {
+  for(var i=0; i < keys.length; i++) {
 
-      var currentKey = keys[i];
-      var currentVal = input[currentKey] || "";
+    var currentKey = keys[i];
+    var currentVal = input[currentKey] || "";
 
-      if(!output[currentKey] || output[currentKey] == "") {
-        output[currentKey] = _psuedoizeString(currentVal);
-      }
+    if(!output[currentKey] || output[currentKey] == "") {
+      output[currentKey] = convert(currentVal);
     }
-
-    return output;
   }
 
+  return output;
 }
 
 /**

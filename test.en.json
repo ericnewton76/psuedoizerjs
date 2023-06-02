@@ -2,5 +2,9 @@
   "KEY_A": "Value 1",
   "KEY_B": "Value 2",
   "TEXT_1": "Test App Title",
-  "TEXT_2": "The quick brown fox jumped over the lazy cow"
+  "TEXT_2": "The quick brown fox jumped over the lazy cow",
+  "NESTED_1": {
+    "KEY_C": "Value 3"
+  },
+  "ARRAY_1": ["Value 4", "Value 5"]
 }
